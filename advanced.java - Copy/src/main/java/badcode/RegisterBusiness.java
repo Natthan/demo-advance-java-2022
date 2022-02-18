@@ -13,7 +13,7 @@ public class RegisterBusiness {
         try {
             speakerId = repository.saveSpeaker(speaker);
         } catch (Exception exception) {
-        	// exception.printStackTrace();
+        	exception.printStackTrace();
             throw new SaveSpeakerException("Can't save a speaker.");
         }
 
@@ -26,6 +26,7 @@ public class RegisterBusiness {
         }
     	speaker.validate();
     }
+	
 
     int getFee(int experienceYear) {
         int fee = 0;
@@ -40,5 +41,7 @@ public class RegisterBusiness {
         }
         return fee;
     }
+
+    
 
 }

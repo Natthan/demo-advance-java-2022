@@ -74,6 +74,7 @@ public class RegisterBusinessTest {
     	speaker.setFirstName("Natthan");
     	speaker.setLastName("Thiraphap");
     	speaker.setEmail("natthan.t@example.com");
+//    	speaker.setEmail("example.com");
         
         Exception exception = assertThrows(SpeakerDoesntMeetRequirementsException.class, () -> {
             business.register(null, speaker);
@@ -82,30 +83,38 @@ public class RegisterBusinessTest {
     }
 	
 	@Test
-    @DisplayName("")
+    @DisplayName("กรอกไม่ถูกต้อง ดังนั้นจะโยน SaveSpeakerException ออกมา " +
+            "พร้อมกับคำว่า Can't save a speaker.")
     public void case06() {
         RegisterBusiness business = new RegisterBusiness();
+        
         Speaker speaker = new Speaker();
-        speaker.setFirstName("Somkiat");
-        speaker.setLastName("Pui");
-        speaker.setEmail("somkiat@xyz.com");
-        Exception exception = assertThrows(SpeakerDoesntMeetRequirementsException.class, () -> {
-            business.register(null, speaker);
-        });
-        assertEquals("Speaker doesn't meet our standard rules.", exception.getMessage());
-    }
-
-    @Test
-    @DisplayName("")
-    public void case07() {
-        RegisterBusiness business = new RegisterBusiness();
-        Speaker speaker = new Speaker();
-        speaker.setFirstName("Somkiat");
-        speaker.setLastName("Pui");
-        speaker.setEmail("somkiat@gmail.com");
+    	speaker.setFirstName("Natthan");
+    	speaker.setLastName("Thiraphap");
+    	speaker.setEmail("natthan.t@example.com");
+    	speaker.setExp(10);
+    	speaker.setRegistrationFee(10);
+    	
+    	SpeakerRepositoryImpl repositoryImpl = new SpeakerRepositoryImpl();
+		repositoryImpl.saveSpeaker(speaker);
+        
         Exception exception = assertThrows(SaveSpeakerException.class, () -> {
-            business.register(null, speaker);
+            business.register(repositoryImpl, speaker);
         });
         assertEquals("Can't save a speaker.", exception.getMessage());
     }
+	
+	 @Test
+	    @DisplayName("")
+	    public void case07() {
+	        RegisterBusiness business = new RegisterBusiness();
+	        Speaker speaker = new Speaker();
+	        speaker.setFirstName("Somkiat");
+	        speaker.setLastName("Pui");
+	        speaker.setEmail("somkiat@gmail.com");
+	        Exception exception = assertThrows(SaveSpeakerException.class, () -> {
+	            business.register(null, speaker);
+	        });
+	        assertEquals("Can't save a speaker.", exception.getMessage());
+	    }
 }
